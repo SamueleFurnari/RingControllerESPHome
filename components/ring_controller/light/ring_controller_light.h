@@ -14,7 +14,7 @@ namespace esphome
         public:
             void setup() override
             {
-                pin_->setup();  // Configura il pin
+                pin_->setup();
                 strip_ = new Adafruit_NeoPixel(num_leds_, pin_num_, NEO_GRB + NEO_KHZ800);
                 strip_->begin();
                 strip_->show();
@@ -46,9 +46,33 @@ namespace esphome
 
             void set_pin(InternalGPIOPin *pin) { 
                 pin_ = pin;
-                pin_num_ = pin->get_pin();  // Salva il numero del pin
+                pin_num_ = pin->get_pin();
             }
             void set_num_leds(uint16_t num) { num_leds_ = num; }
+
+            // NUOVI METODI PUBBLICI
+            void set_effect(const std::string &name)
+            {
+                if (current_effect_ != nullptr) {
+                    delete current_effect_;
+                }
+                current_effect_name_ = name;
+                current_effect_ = effects::get_effect(name);
+            }
+
+            std::string get_effect() const { return current_effect_name_; }
+            
+            void set_speed(int v) { 
+                speed_ = v; 
+            }
+            
+            int get_speed() const { return speed_; }
+            
+            void set_intensity(int v) { 
+                intensity_ = v; 
+            }
+            
+            int get_intensity() const { return intensity_; }
 
             ~RingController() {
                 if (strip_ != nullptr) {

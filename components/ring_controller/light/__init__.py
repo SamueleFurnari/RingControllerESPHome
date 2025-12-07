@@ -1,7 +1,7 @@
 import esphome.config_validation as cv
 import esphome.codegen as cg
 from esphome.components import light
-from esphome.const import CONF_OUTPUT_ID
+from esphome.const import CONF_OUTPUT_ID, CONF_ID
 from esphome import pins
 
 CONF_PIN = "pin"
@@ -21,10 +21,8 @@ async def to_code(config):
     await cg.register_component(var, config)
     await light.register_light(var, config)
     
-    # Converti correttamente il pin
     pin = await cg.gpio_pin_expression(config[CONF_PIN])
     cg.add(var.set_pin(pin))
     cg.add(var.set_num_leds(config[CONF_NUM_LEDS]))
     
-    # AGGIUNGI LA LIBRERIA QUI
     cg.add_library("adafruit/Adafruit NeoPixel", "1.10.6")
