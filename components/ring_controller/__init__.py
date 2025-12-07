@@ -4,11 +4,11 @@ from esphome.components import light
 from esphome.const import CONF_ID
 
 # Nome del namespace C++
-neo_ns = cg.esphome_ns.namespace('neopixel_ring')
-NeoPixelRing = neo_ns.class_('NeoPixelRing', cg.Component, light.LightOutput)
+neo_ns = cg.esphome_ns.namespace('ring_controller')
+RingController = neo_ns.class_('RingController', cg.Component, light.LightOutput)
 
 CONFIG_SCHEMA = cv.Schema({
-    cv.GenerateID(): cv.declare_id(NeoPixelRing),
+    cv.GenerateID(): cv.declare_id(RingController),
 }).extend(light.LIGHT_OUTPUT_SCHEMA)
 
 def to_code(config):
