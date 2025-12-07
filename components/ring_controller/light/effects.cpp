@@ -95,26 +95,36 @@ namespace effects
             strip->setPixelColor(i, 0);
     }
 
+    // Aggiungi i distruttori (anche se vuoti)
+    RainbowEffect::~RainbowEffect() {}
+    TheaterEffect::~TheaterEffect() {}
+    BreathingEffect::~BreathingEffect() {}
+    WipeEffect::~WipeEffect() {}
+    SparkleEffect::~SparkleEffect() {}
+    ColorCycleEffect::~ColorCycleEffect() {}
+    StaticEffect::~StaticEffect() {}
+    OffEffect::~OffEffect() {}
+
     // Factory
-    Effect get_effect(const std::string &name)
+    Effect* get_effect(const std::string &name)
     {
         if (name == "Rainbow")
-            return RainbowEffect();
+            return new RainbowEffect();
         if (name == "Theater")
-            return TheaterEffect();
+            return new TheaterEffect();
         if (name == "Breathing")
-            return BreathingEffect();
+            return new BreathingEffect();
         if (name == "Wipe")
-            return WipeEffect();
+            return new WipeEffect();
         if (name == "Sparkle")
-            return SparkleEffect();
+            return new SparkleEffect();
         if (name == "ColorCycle")
-            return ColorCycleEffect();
+            return new ColorCycleEffect();
         if (name == "Static")
-            return StaticEffect();
+            return new StaticEffect();
         if (name == "Off")
-            return OffEffect();
-        return RainbowEffect();
+            return new OffEffect();
+        return new RainbowEffect();
     }
 
 } // namespace effects

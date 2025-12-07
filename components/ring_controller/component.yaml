@@ -1,5 +1,0 @@
-name: "Ring controller"
-version: "3.0.0"
-
-light:
-  - platform: ring_controller
