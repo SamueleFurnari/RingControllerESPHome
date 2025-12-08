@@ -4,7 +4,7 @@ Un componente custom per ESPHome che permette di controllare strisce LED NeoPixe
 
 ## 🌟 Caratteristiche
 
-- **8 effetti luminosi** predefiniti
+- **9 effetti luminosi** predefiniti, incluso l'effetto fiamma realistico
 - **Controllo completo** da Home Assistant
 - **Regolazione velocità** e intensità degli effetti
 - **Facile configurazione** tramite YAML
@@ -12,14 +12,15 @@ Un componente custom per ESPHome che permette di controllare strisce LED NeoPixe
 
 ## 📋 Effetti Disponibili
 
-1. **Rainbow** - Arcobaleno animato
-2. **Theater** - Effetto teatro con LED alternati
-3. **Breathing** - Respirazione dolce
-4. **Wipe** - Riempimento progressivo
-5. **Sparkle** - Scintillio casuale
-6. **ColorCycle** - Ciclo di colori
-7. **Static** - Colore statico rosso
-8. **Off** - Spento
+1. **Flame** 🔥 - Simulazione realistica di fiamme tremolanti
+2. **Rainbow** - Arcobaleno animato
+3. **Theater** - Effetto teatro con LED alternati
+4. **Breathing** - Respirazione dolce
+5. **Wipe** - Riempimento progressivo
+6. **Sparkle** - Scintillio casuale
+7. **ColorCycle** - Ciclo di colori
+8. **Static** - Colore statico rosso
+9. **Off** - Spento
 
 ## 🔧 Installazione
 
@@ -108,7 +109,7 @@ Dopo aver installato il componente, avrai accesso a:
 - **Luminosità** (nota: attualmente non utilizzato dagli effetti)
 
 ### Entità Select
-- **Selezione effetto** - Scegli tra gli 8 effetti disponibili
+- **Selezione effetto** - Scegli tra i 9 effetti disponibili (Flame, Rainbow, Theater, Breathing, Wipe, Sparkle, ColorCycle, Static, Off)
 
 ### Entità Number
 - **Velocità** - Controlla la velocità dell'animazione (1-100)
