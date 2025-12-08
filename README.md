@@ -1,150 +1,259 @@
-NeoPixel Ring ESPHome Component
+# Ring Controller ESPHome
 
-Componente ESPHome per controllare un anello NeoPixel (ESP01 / ESP8266) con effetti animati, integrato direttamente in Home Assistant tramite API.
+Un componente custom per ESPHome che permette di controllare strisce LED NeoPixel (WS2812B) con effetti luminosi predefiniti.
 
-Caratteristiche
+## 🌟 Caratteristiche
 
-Light RGB + dimmer (colore e luminosità)
+- **8 effetti luminosi** predefiniti
+- **Controllo completo** da Home Assistant
+- **Regolazione velocità** e intensità degli effetti
+- **Facile configurazione** tramite YAML
+- **Ottimizzato** per ESP8266 (testato su ESP-01 1M)
 
-Effetti animati: Rainbow, Theater, Breathing, Wipe, Sparkle, ColorCycle, Static, Off
+## 📋 Effetti Disponibili
 
-Selezione effetti tramite select in Home Assistant
+1. **Rainbow** - Arcobaleno animato
+2. **Theater** - Effetto teatro con LED alternati
+3. **Breathing** - Respirazione dolce
+4. **Wipe** - Riempimento progressivo
+5. **Sparkle** - Scintillio casuale
+6. **ColorCycle** - Ciclo di colori
+7. **Static** - Colore statico rosso
+8. **Off** - Spento
 
-Controllo velocità e intensità tramite number in Home Assistant
+## 🔧 Installazione
 
-Nessun MQTT necessario, usa solo ESPHome API
+### Requisiti Hardware
 
-Pin e numero di LED fissi come nel firmware originale
+- ESP8266 o ESP32
+- Striscia LED NeoPixel (WS2812B, WS2811, ecc.)
+- Alimentazione adeguata per i LED
 
-Autodiscovery nativa in Home Assistant
+### Configurazione ESPHome
 
-Struttura cartelle
-neopixel_ring_esphome/
-├── components/
-│   └── neopixel_ring/
-│       ├── component.yaml
-│       ├── neopixel_ring.h
-│       ├── neopixel_ring.cpp
-│       ├── effects.h
-│       └── effects.cpp
-├── README.md
-└── example.yaml
+Aggiungi questa configurazione al tuo file YAML:
 
-Installazione e uso
+```yaml
+external_components:
+  - source:
+      type: git
+      url: https://github.com/SamueleFurnari/RingControllerESPHome.git
+      ref: main
+    refresh: 1min
+    components: [ring_controller]
 
-Copia la struttura dei file sul tuo PC.
+light:
+  - platform: ring_controller
+    output_id: ring_output
+    id: ring_light
+    name: "Ring Controller"
+    pin: GPIO2           # Pin di controllo LED
+    num_leds: 16         # Numero di LED nella striscia
 
-Modifica example.yaml con i tuoi parametri Wi‑Fi:
+select:
+  - platform: ring_controller
+    ring_controller_id: ring_output
+    name: "Effetto Anello"
+
+number:
+  - platform: ring_controller
+    ring_controller_id: ring_output
+    parameter: speed
+    name: "Velocità Effetto"
+    
+  - platform: ring_controller
+    ring_controller_id: ring_output
+    parameter: intensity
+    name: "Intensità Effetto"
+```
+
+## ⚙️ Parametri di Configurazione
+
+### Light Component
+
+| Parametro | Tipo | Default | Descrizione |
+|-----------|------|---------|-------------|
+| `output_id` | ID | Richiesto | ID univoco del controller |
+| `id` | ID | Richiesto | ID del componente light |
+| `name` | string | Richiesto | Nome visualizzato in Home Assistant |
+| `pin` | GPIO | 2 | Pin GPIO connesso ai LED |
+| `num_leds` | int | 16 | Numero di LED nella striscia (1-1000) |
+
+### Select Component
+
+| Parametro | Tipo | Default | Descrizione |
+|-----------|------|---------|-------------|
+| `ring_controller_id` | ID | Richiesto | Riferimento all'output_id del light |
+| `name` | string | Richiesto | Nome del selettore effetti |
+
+### Number Component
+
+| Parametro | Tipo | Default | Descrizione |
+|-----------|------|---------|-------------|
+| `ring_controller_id` | ID | Richiesto | Riferimento all'output_id del light |
+| `parameter` | enum | Richiesto | `speed` o `intensity` |
+| `name` | string | Richiesto | Nome del controllo numerico |
+
+**Ranges:**
+- **Speed**: 1-100 (default: 50)
+- **Intensity**: 0-255 (default: 150)
+
+## 📱 Utilizzo in Home Assistant
+
+Dopo aver installato il componente, avrai accesso a:
+
+### Entità Light
+- **Accendi/Spegni** il ring LED
+- **Controllo RGB** (nota: attualmente non utilizzato dagli effetti)
+- **Luminosità** (nota: attualmente non utilizzato dagli effetti)
+
+### Entità Select
+- **Selezione effetto** - Scegli tra gli 8 effetti disponibili
+
+### Entità Number
+- **Velocità** - Controlla la velocità dell'animazione (1-100)
+- **Intensità** - Controlla l'intensità dell'effetto (0-255)
+
+## 🔌 Schema di Collegamento
+
+### ESP8266 (ESP-01)
+
+```
+ESP-01          NeoPixel Strip
+GPIO2    -->    Data In (DIN)
+GND      -->    GND
+         -->    +5V (alimentazione esterna)
+```
+
+⚠️ **Importante**: 
+- Usa un'alimentazione separata per i LED
+- Aggiungi un condensatore da 1000µF tra +5V e GND
+- Aggiungi una resistenza da 470Ω sul pin dati
+
+## 🛠️ Sviluppo
+
+### Struttura del Progetto
+
+```
+components/ring_controller/
+├── __init__.py                 # Configurazione base
+├── light/
+│   ├── __init__.py            # Configurazione light platform
+│   ├── ring_controller_light.h # Implementazione controller
+│   ├── effects.h              # Definizione effetti
+│   └── effects.cpp            # Implementazione effetti
+├── select/
+│   ├── __init__.py            # Configurazione select platform
+│   └── ring_controller_select.h # Implementazione select
+└── number/
+    ├── __init__.py            # Configurazione number platform
+    └── ring_controller_number.h # Implementazione number
+```
+
+### Dipendenze
+
+- **Adafruit NeoPixel** v1.10.6 (inclusa automaticamente)
+
+## 🐛 Risoluzione Problemi
+
+### I LED non si accendono
+- Verifica il pin GPIO configurato
+- Controlla l'alimentazione dei LED
+- Verifica il tipo di LED (NEO_GRB + NEO_KHZ800)
+
+### Effetto non cambia
+- Verifica che il select sia correttamente collegato al `ring_controller_id`
+- Controlla i log ESPHome per errori
+
+### Compilazione fallita
+- Assicurati di usare ESPHome 2024.11.0 o superiore
+- Verifica che il componente sia scaricato correttamente
+- Usa `refresh: 1min` nella configurazione external_components
+
+## 📝 Esempio Completo
+
+```yaml
+esphome:
+  name: ring-controller
+  friendly_name: Ring Controller
+
+esp8266:
+  board: esp01_1m
+
+logger:
+
+api:
+  encryption:
+    key: "tua_chiave_api"
+
+ota:
+  - platform: esphome
+    password: "tua_password"
 
 wifi:
-  ssid: "TUO_WIFI"
-  password: "TUA_PASSWORD"
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  ap:
+    ssid: "Ring-Controller Fallback"
+    password: "password_fallback"
 
+captive_portal:
 
-Compila e flasha il firmware con ESPHome:
+external_components:
+  - source:
+      type: git
+      url: https://github.com/SamueleFurnari/RingControllerESPHome.git
+      ref: main
+    refresh: 1min
+    components: [ring_controller]
 
-esphome run example.yaml
+light:
+  - platform: ring_controller
+    output_id: ring_output
+    id: ring_light
+    name: "Ring Controller"
+    pin: GPIO2
+    num_leds: 16
 
+select:
+  - platform: ring_controller
+    ring_controller_id: ring_output
+    name: "Effetto Anello"
 
-Dopo l’avvio, Home Assistant rileverà automaticamente il dispositivo come NeoPixel Ring.
+number:
+  - platform: ring_controller
+    ring_controller_id: ring_output
+    parameter: speed
+    name: "Velocità Effetto"
+    
+  - platform: ring_controller
+    ring_controller_id: ring_output
+    parameter: intensity
+    name: "Intensità Effetto"
+```
 
-Puoi controllare da HA:
+## 🤝 Contribuire
 
-Colore e luminosità della light
+I contributi sono benvenuti! Sentiti libero di:
+- Aprire issue per bug o richieste di funzionalità
+- Inviare pull request
+- Suggerire nuovi effetti luminosi
 
-Effetto (dal menu a tendina select)
+## 📄 Licenza
 
-Velocità e intensità degli effetti
+Questo progetto è distribuito sotto licenza MIT.
 
-Accensione / spegnimento
+## 👤 Autore
 
-Personalizzazione
+**Samuele Furnari**
+- GitHub: [@SamueleFurnari](https://github.com/SamueleFurnari)
 
-Effetti: puoi aggiungere o modificare gli effetti nei file effects.h e effects.cpp.
+## 🙏 Ringraziamenti
 
-Pin e LED: fissati in neopixel_ring.h, non modificabili da Home Assistant.
+- [ESPHome](https://esphome.io/) per il framework fantastico
+- [Adafruit](https://github.com/adafruit/Adafruit_NeoPixel) per la libreria NeoPixel
+- La community di Home Assistant
 
-Compatibilità
+---
 
-ESP01 / ESP8266 con almeno 1MB flash
-
-Home Assistant con integrazione ESPHome
-
-Se vuoi, posso anche generarti una versione Markdown più “carina” con immagini e tabelle per descrivere tutti gli effetti e i comandi disponibili, pronta per GitHub. Vuoi che lo faccia?
-
-You said:
-si
-ChatGPT said:
-
-Perfetto! Ecco una versione più “grafica” del README pronta per GitHub, con immagini di esempio, tabelle e descrizione chiara degli effetti e controlli.
-
-NeoPixel Ring ESPHome Component
-
-Componente ESPHome per controllare un anello NeoPixel (ESP01 / ESP8266) con effetti animati, integrato direttamente in Home Assistant tramite API.
-
-🌟 Caratteristiche
-Funzionalità	Descrizione
-Light RGB + dimmer	Colore e luminosità controllabili da Home Assistant
-Effetti animati	Rainbow, Theater, Breathing, Wipe, Sparkle, ColorCycle, Static, Off
-Controllo effetti	Selezionabili tramite select in Home Assistant
-Controllo velocità/intensità	Regolabili tramite number in Home Assistant
-Pin & LED	Fissi in firmware (non modificabili via HA)
-Autodiscovery	Rilevamento automatico in Home Assistant
-Comunicazione	Solo ESPHome API, nessun MQTT
-📂 Struttura cartelle
-neopixel_ring_esphome/
-├── components/
-│   └── neopixel_ring/
-│       ├── component.yaml
-│       ├── neopixel_ring.h
-│       ├── neopixel_ring.cpp
-│       ├── effects.h
-│       └── effects.cpp
-├── README.md
-└── example.yaml
-
-⚡ Installazione e uso
-
-Copia la struttura dei file sul tuo PC.
-
-Modifica example.yaml con i tuoi parametri Wi‑Fi:
-
-wifi:
-  ssid: "TUO_WIFI"
-  password: "TUA_PASSWORD"
-
-
-Compila e flasha il firmware con ESPHome:
-
-esphome run example.yaml
-
-
-Home Assistant rileverà automaticamente il dispositivo come NeoPixel Ring.
-
-🛠 Controlli disponibili in Home Assistant
-Tipo	Nome ID	Descrizione
-Light	ring	Colore e luminosità LED
-Select	neopixel_effect	Effetto attivo (Rainbow, Theater…)
-Number	neopixel_speed	Velocità effetto
-Number	neopixel_intensity	Intensità effetto
-🎨 Effetti disponibili
-Effetto	Descrizione
-Rainbow	Ciclo arcobaleno continuo
-Theater	Scie alternate tipo “teatro”
-Breathing	Dissolvenza in entrata e uscita della luce
-Wipe	Accensione progressiva dei LED
-Sparkle	LED casuali lampeggianti
-ColorCycle	Ciclo di colori uniforme
-Static	Colore fisso (rosso di default)
-Off	Spegne tutti i LED
-⚙ Personalizzazione
-
-Effetti: puoi aggiungere o modificare gli effetti nei file effects.h e effects.cpp.
-
-Pin e numero di LED: fissati in neopixel_ring.h, non modificabili da Home Assistant.
-
-🧩 Compatibilità
-
-ESP01 / ESP8266 con almeno 1MB flash
-
-Home Assistant con integrazione ESPHome
+⭐ Se questo progetto ti è stato utile, considera di mettere una stella su GitHub!
