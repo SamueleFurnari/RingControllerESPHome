@@ -10,6 +10,7 @@ from .. import ring_controller_ns, CONF_RING_CONTROLLER_ID, RingController
 RingControllerSelect = ring_controller_ns.class_("RingControllerSelect", select.Select, cg.Component)
 
 CONF_EFFECTS = [
+    "Flame",
     "Rainbow",
     "Theater", 
     "Breathing",

@@ -71,6 +71,41 @@ namespace effects
         void apply(Adafruit_NeoPixel *strip, const EffectParams &params) override;
     };
 
+    // NUOVO: Flame Effect
+    #define FLAME_WIDTH 3
+    #define FLICKER_CHANCE 3
+    #define SCALERVAL 256 * 3
+
+    struct flame_element
+    {
+        int brightness;
+        int step;
+        int max_brightness;
+        long rgb[3];
+        uint8_t state;
+    };
+
+    class FlameEffect : public Effect
+    {
+    public:
+        FlameEffect();
+        ~FlameEffect() override;
+        void apply(Adafruit_NeoPixel *strip, const EffectParams &params) override;
+
+    private:
+        void InitFlames(int num_flames);
+        void UpdateFlameColor(Adafruit_NeoPixel *strip, uint8_t flame_num, int new_brightness);
+        void CreateNewFlame(uint8_t flame_num);
+        int GetStepSize();
+        int GetMaxBrightness();
+
+        flame_element *flames_;
+        int number_of_flames_;
+        uint32_t rez_range_;
+        
+        static const double flamecolors_[22][3];
+    };
+
     Effect* get_effect(const std::string &name);
 
 } // namespace effects
