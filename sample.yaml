@@ -1,0 +1,45 @@
+esphome:
+  name: test-ring
+  friendly_name: Test Ring Controller
+
+esp8266:
+  board: esp01_1m
+
+wifi:
+  ssid: "test"
+  password: "test12345678"
+
+logger:
+  baud_rate: 0
+
+api:
+
+ota:
+  platform: esphome
+
+light:
+  - platform: ring_controller
+    output_id: ring_output
+    id: ring_light
+    name: "Ring Controller"
+    pin: GPIO2
+    num_leds: 16
+    
+select:
+  - platform: ring_controller
+    ring_controller_id: ring_output
+    id: effect_select
+    name: "Effetto Anello"
+  
+number:
+  - platform: ring_controller
+    ring_controller_id: ring_output
+    parameter: speed
+    id: speed_number
+    name: "Velocità Effetto"
+    
+  - platform: ring_controller
+    ring_controller_id: ring_output
+    parameter: intensity
+    id: intensity_number
+    name: "Intensità Effetto"

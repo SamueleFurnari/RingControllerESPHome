@@ -1,11 +1,8 @@
 import esphome.config_validation as cv
 import esphome.codegen as cg
 from esphome.components import number
-from esphome.const import CONF_ID, CONF_TYPE
+from esphome.const import CONF_ID
 from .. import ring_controller_ns, CONF_RING_CONTROLLER_ID, RingController
-
-# RIMUOVI QUESTA RIGA
-# DEPENDENCIES = ["ring_controller"]
 
 RingControllerNumber = ring_controller_ns.class_("RingControllerNumber", number.Number, cg.Component)
 

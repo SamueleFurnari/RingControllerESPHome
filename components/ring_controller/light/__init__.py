@@ -1,7 +1,7 @@
 import esphome.config_validation as cv
 import esphome.codegen as cg
 from esphome.components import light
-from esphome.const import CONF_OUTPUT_ID, CONF_ID
+from esphome.const import CONF_OUTPUT_ID
 from esphome import pins
 
 CONF_PIN = "pin"
