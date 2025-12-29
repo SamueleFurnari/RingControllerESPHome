@@ -4,11 +4,11 @@ A custom ESPHome component for controlling NeoPixel LED strips (WS2812B) with pr
 
 ## 🌟 Features
 
-- **9 built-in light effects**, including realistic flame simulation
+- **8 built-in light effects**, including realistic flame simulation
 - **Full control** from Home Assistant
 - **Speed and intensity adjustment** for effects
 - **Easy configuration** via YAML
-- **Tested** on ESP-01 1M
+- **Tested** on ESP-01 1M with 16-LED NeoPixel ring
 
 ## 📋 Available Effects
 
@@ -20,15 +20,14 @@ A custom ESPHome component for controlling NeoPixel LED strips (WS2812B) with pr
 6. **Sparkle** - Random sparkle
 7. **ColorCycle** - Color cycling
 8. **Static** - Static red color
-9. **Off** - Turn off device
 
 ## 🔧 Installation
 
 ### Hardware Requirements
 
 - ESP8266 or ESP32
-- NeoPixel LED strip (WS2812B, WS2811, etc.) - tested with a 16-LED NeoPixel ring
-- Adequate power supply for LEDs - if necessary
+- NeoPixel LED strip (WS2812B, WS2811, etc.)
+- Adequate power supply for LEDs
 
 ### ESPHome Configuration
 
@@ -104,14 +103,11 @@ number:
 After installing the component, you'll have access to:
 
 ### Light Entity
-- **Turn on/off** the LED strip/ring
-- **RGB control** (note: currently not used by effects)
-- **Brightness** (note: currently not used by effects)
-- When turned off, automatically switches to "Off" effect
-- When turned on, restores the previously selected effect
+- **Turn on/off** the LED ring
+- Automatically saves and restores the selected effect when toggled
 
 ### Select Entity
-- **Effect selection** - Choose from 9 available effects (Flame, Rainbow, Theater, Breathing, Wipe, Sparkle, ColorCycle, Static, Off)
+- **Effect selection** - Choose from 8 available effects (Flame, Rainbow, Theater, Breathing, Wipe, Sparkle, ColorCycle, Static)
 
 ### Number Entities
 - **Speed** - Controls animation speed (1-100)
@@ -263,6 +259,8 @@ This project is distributed under the MIT License.
 
 - [ESPHome](https://esphome.io/) for the amazing framework
 - [Adafruit](https://github.com/adafruit/Adafruit_NeoPixel) for the NeoPixel library
+- [NeoPixel Jack-o-lantern by Lon Koenig](https://learn.adafruit.com/neopixel-jack-o-lantern/the-code) for the original Flame effect implementation
+- [Fastled]()...
 - The Home Assistant community
 
 ---
