@@ -6,7 +6,6 @@ CONF_RING_CONTROLLER_ID = "ring_controller_id"
 ring_controller_ns = cg.esphome_ns.namespace("ring_controller")
 RingController = ring_controller_ns.class_("RingController", cg.Component)
 
-# Ring controller component schema.
 CONFIG_SCHEMA = cv.COMPONENT_SCHEMA.extend({
     cv.GenerateID(): cv.declare_id(RingController),
 })

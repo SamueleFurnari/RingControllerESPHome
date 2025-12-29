@@ -4,7 +4,6 @@ namespace esphome::ring_controller {
 void RingControllerSelect::set_parent(RingController *parent) { parent_ = parent; }
 
 void RingControllerSelect::setup() {
-  // Imposta il valore iniziale
   if (parent_ != nullptr) {
     this->publish_state(parent_->get_effect());
   }

@@ -4,11 +4,9 @@ from esphome.components import select
 from esphome.const import CONF_ID
 from .. import ring_controller_ns, CONF_RING_CONTROLLER_ID, RingController
 
-# RIMUOVI QUESTA RIGA
-# DEPENDENCIES = ["ring_controller"]
-
 RingControllerSelect = ring_controller_ns.class_("RingControllerSelect", select.Select, cg.Component)
 
+# Supported effects.
 CONF_EFFECTS = [
     "Flame",
     "Rainbow",
@@ -17,8 +15,7 @@ CONF_EFFECTS = [
     "Wipe",
     "Sparkle",
     "ColorCycle",
-    "Static",
-    "Off"
+    "Static"
 ]
 
 CONFIG_SCHEMA = select.select_schema(RingControllerSelect).extend({

@@ -59,7 +59,6 @@ class OffEffect : public Effect {
   void apply(Adafruit_NeoPixel *strip, const EffectParams &params) override;
 };
 
-// NUOVO: Flame Effect
 #define FLAME_WIDTH 3
 #define FLICKER_CHANCE 3
 #define SCALERVAL 256 * 3

@@ -20,7 +20,7 @@ void RingController::loop() {
 
 light::LightTraits RingController::get_traits() {
   auto traits = light::LightTraits();
-  traits.set_supported_color_modes({light::ColorMode::RGB});
+  traits.set_supported_color_modes({light::ColorMode::ON_OFF});
   return traits;
 }
 
@@ -38,7 +38,7 @@ void RingController::write_state(light::LightState *state) {
     } else {
       enabled_ = false;
       saved_effect_name_ = current_effect_name_;
-      set_effect("OffEffect");
+      set_effect("Off");
     }
   }
 }

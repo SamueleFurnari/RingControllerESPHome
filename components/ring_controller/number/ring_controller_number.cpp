@@ -6,7 +6,6 @@ void RingControllerNumber::set_parent(RingController *parent) { parent_ = parent
 void RingControllerNumber::set_parameter(const std::string &param) { parameter_ = param; }
 
 void RingControllerNumber::setup() {
-  // Imposta il valore iniziale
   if (parent_ != nullptr) {
     if (parameter_ == "speed") {
       this->publish_state(parent_->get_speed());
